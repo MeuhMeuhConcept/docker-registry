@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  registry-srv:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    deploy:
+      #restart_policy:
+      #  condition: any
+      #labels:
+      #  - "traefik.backend=registry"
+      #  - "traefik.port=5000"
+      #  - "traefik.frontend.rule=Host:registry.meuhmeuhconcept.fr"
+    #networks:
+    #  - web
+    volumes:
+      - $PWD/conf/registry.yml:/etc/docker/registry/config.yml:ro
+      #- $PWD/data/acme.json:/srv/acme.json
+      #- $PWD/data/.htpasswd:/srv/.htpasswd
+      - $PWD/conf/auth.cert:/etc/docker/registry/auth.cert
+      - $PWD/data/storage:/var/lib/registry
+
+  registy-web:
+    image: hyper/docker-registry-web
+    ports:
+      - "8080:8080"
+    deploy:
+      #restart_policy:
+      #  condition: any
+      #labels:
+      #  - "traefik.backend=registry-web"
+      #  - "traefik.port=8080"
+      #  - "traefik.frontend.rule=Host:registry-ui.meuhmeuhconcept.fr"
+    #networks:
+    #  - web
+    volumes:
+      - $PWD/conf/registry-web.yml:/conf/config.yml
+      - $PWD/conf/auth.key:/conf/auth.key
+      - $PWD/data/db:/data
+
+#networks:
+#  web:
+#    external:
+#      name: traefik_net

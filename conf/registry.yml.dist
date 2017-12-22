@@ -1,0 +1,43 @@
+version: 0.1
+
+log:
+  level: debug
+  fields:
+    service: registry
+
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: false
+
+auth:
+#  htpasswd:
+#    realm: basic-realm
+#    path: /srv/.htpasswd
+  token:
+    # external url to docker-web authentication endpoint
+    realm: http://registry-ui/api/auth
+    # should be same as registry.name of registry-web
+    service: registry.meuhmeuhconcept.fr
+    # should be same as registry.auth.issuer of registry-web
+    issuer: 'mmc issuer'
+    # path to auth certificate
+    rootcertbundle: /etc/docker/registry/auth.cert
+http:
+  addr: :5000
+  host: https://registry.meuhmeuhconcept.fr
+  headers:
+    X-Content-Type-Options: [nosniff]
+  #tls:
+  #  letsencrypt:
+  #    cachefile: /srv/acme.json
+  #    email: jn.germon@gmail.com
+
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3

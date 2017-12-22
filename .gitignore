@@ -1,0 +1,15 @@
+docker-compose.yml
+config.yml
+
+data/*
+!data/.gitkeep
+!data/storage
+data/storage/*
+!data/storage/.gitkeep
+!data/db
+data/db/*
+!data/db/.gitkeep
+
+conf/auth.*
+conf/registry.yml
+conf/registry-web.yml
